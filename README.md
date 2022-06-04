@@ -5,7 +5,7 @@
 This is a project to analyze disaster data from Appen (formally Figure 8) than classifies disaster messages.  
 From web app, you can type in any messages at searching block, then there will be classification table shown at below
 
-![image info]([pic1.png](https://github.com/JinHwaChiu/Udacity_DSND_Projects3/blob/main/pic1.PNG))
+![image info](https://github.com/JinHwaChiu/Udacity_DSND_Projects3/blob/main/pic1.PNG)
 
 
 
