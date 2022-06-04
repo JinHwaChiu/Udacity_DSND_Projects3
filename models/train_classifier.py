@@ -18,6 +18,15 @@ from sklearn.ensemble import AdaBoostClassifier
 
 
 def load_data(database_filepath):
+    '''
+    Input:
+    database_filepath
+    
+    Output:
+    X - independent series values
+    Y - dependent dataframe values
+    '''
+    # create a processed sqlite db
     engine = create_engine('sqlite:///{}'.format(database_filepath))
     df = pd.read_sql_table('table',engine)  
     X = df['message']
@@ -25,9 +34,24 @@ def load_data(database_filepath):
     return X,Y
 
 def tokenize(text):
+    '''
+    Input:
+    string text
+    
+    Output:
+    list of string
+    
+    ex: 
+    Input -> 'Weather update - a cold front from Cuba that'
+    Output -> ['weather', 'update', 'cold', 'front', 'cuba']
+    '''
+    # substitute the symbols wich are not a-zA-Z0-9
     text = re.sub(r"[^a-zA-Z0-9]"," ",text)
+    # tokenize
     words = word_tokenize(text)
+    # remove the stopwords
     words = [w for w in words if w not in stopwords.words("english")]
+    # lemmatize put the tokens  list
     lemmatizer = WordNetLemmatizer()
     clean_tokens = []
     for tok in words:
@@ -38,11 +62,20 @@ def tokenize(text):
 
 
 def build_model():
+    '''
+    Input: 
+    None
+    
+    Output:
+    sklearn model
+    '''
+    
     pipeline = Pipeline([
     ('vect',CountVectorizer(tokenizer=tokenize)),
     ('tfidf',TfidfTransformer()),
     ('clf',MultiOutputClassifier(AdaBoostClassifier())),
     ])
+    # paramters used for gridsearch
     parameters = {'tfidf__use_idf': (True, False), 
               'clf__estimator__n_estimators': [20,80,100],
               'clf__estimator__base_estimator': [SVC(), DecisionTreeClassifier()]
@@ -54,11 +87,25 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test):
+    ''' 
+    Input:
+    sklearn model, X, Y test data
+    
+    Output:
+    None
+    '''
     for i, col in enumerate(Y_test):
-        predicted = pipeline.predict(X_test)
+        predicted = model.predict(X_test)
         print(classification_report(Y_test[col],predicted[:, i]))
 
 def save_model(model, model_filepath):
+    '''
+    Input
+    model, model_filepath
+    
+    Output:
+    pickle file
+    '''
     with open(model_filepath, 'wb') as f:
         pickle.dump(model, f)
 
