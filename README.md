@@ -7,7 +7,14 @@ From web app, you can type in any messages at searching block, then there will b
 
 ![image info](https://github.com/JinHwaChiu/Udacity_DSND_Projects3/blob/main/pic1.PNG)
 
-
+.
+├── build                   # Compiled files (alternatively `dist`)
+├── docs                    # Documentation files (alternatively `doc`)
+├── src                     # Source files (alternatively `lib` or `app`)
+├── test                    # Automated tests (alternatively `spec` or `tests`)
+├── tools                   # Tools and utilities
+├── LICENSE
+└── README.md
 
 ### How to use ?:  
 1. Run the following commands in the project's root directory to set up your database and model.
